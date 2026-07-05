@@ -4,7 +4,7 @@
 
   /* ---- Fill these in (see README "Placeholders") -------------------- */
   var GA_MEASUREMENT_ID = 'G-044JQFGMR1';   // GA4 measurement ID
-  var VIMEO_REEL_ID = 'VIMEO_REEL_ID';      // numeric ID from vimeo.com/<ID>
+  var VIMEO_REEL_ID = '429732990';          // vimeo.com/429732990 — Dillon R. Carpenter Showreel
   /* -------------------------------------------------------------------- */
 
   /* Google Analytics 4 — loads only once a real ID is configured, so the
@@ -70,8 +70,8 @@
      until the visitor asks for the video). dnt=1 disables Vimeo tracking. */
   function mountVimeo(container, id) {
     var iframe = document.createElement('iframe');
-    iframe.src = 'https://player.vimeo.com/video/' + id + '?autoplay=1&dnt=1';
-    iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+    iframe.src = 'https://player.vimeo.com/video/' + id + '?autoplay=1&dnt=1&title=0&byline=0&portrait=0&badge=0';
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
     iframe.setAttribute('allowfullscreen', '');
     iframe.title = 'Showreel — Dillon R. Carpenter';
     container.textContent = '';

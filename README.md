@@ -29,9 +29,6 @@ python -m http.server 8000 -d public
 
 | What | Where | Notes |
 |---|---|---|
-| Formspree form ID | `public/index.html` (form `action`) **and** `public/site.js` guard comment | Create the form at formspree.io, replace `FORMSPREE_FORM_ID` with the real 8-char ID |
-| Vimeo reel ID | `public/site.js` (`VIMEO_REEL_ID`) and `public/index.html` JSON-LD `embedUrl` | Numeric ID from the reel's vimeo.com URL. Salvaged master: `Downloads/dillonrcarpenter-showreel-salvaged.mp4` |
-| VideoObject `uploadDate` | `public/index.html` JSON-LD | Currently 2023-12-03 (date the reel went live on Squarespace); update to the Vimeo upload date |
 | Extra `sameAs` profiles | `public/index.html` JSON-LD | Add LinkedIn/Instagram/YouTube URLs if wanted |
 
 After changing `styles.css` or `site.js`, bump the `?v=` query string in
