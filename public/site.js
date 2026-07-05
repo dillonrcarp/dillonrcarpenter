@@ -3,7 +3,7 @@
   'use strict';
 
   /* ---- Fill these in (see README "Placeholders") -------------------- */
-  var GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';   // GA4 measurement ID
+  var GA_MEASUREMENT_ID = 'G-044JQFGMR1';   // GA4 measurement ID
   var VIMEO_REEL_ID = 'VIMEO_REEL_ID';      // numeric ID from vimeo.com/<ID>
   /* -------------------------------------------------------------------- */
 
