@@ -1,0 +1,6 @@
+# Old Squarespace URLs -> new single-page sections (301 preserves link equity)
+/home / 301
+/about /#about 301
+/services /#services 301
+/contact /#quote 301
+/book-a-consultation /#quote 301
