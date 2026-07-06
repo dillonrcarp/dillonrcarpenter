@@ -2,6 +2,13 @@
 (function () {
   'use strict';
 
+  /* Flag JS on so CSS can gate scroll-reveal hiding — a no-JS visitor
+     keeps everything visible (the .reveal default is fully shown). */
+  document.documentElement.classList.add('js');
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* ---- Fill these in (see README "Placeholders") -------------------- */
   var GA_MEASUREMENT_ID = 'G-044JQFGMR1';   // GA4 measurement ID
   var VIMEO_REEL_ID = '429732990';          // vimeo.com/429732990 — Dillon R. Carpenter Showreel
@@ -23,6 +30,40 @@
   /* Footer year */
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  /* Hero HUD timecode — a running SMPTE-style counter (HH:MM:SS:FF @ 24fps).
+     Purely decorative; holds at zero for reduced-motion, and pauses when the
+     tab is hidden so it never spins in the background. */
+  var tcEl = document.querySelector('[data-timecode]');
+  if (tcEl) {
+    if (reduceMotion || typeof requestAnimationFrame !== 'function') {
+      tcEl.textContent = '00:00:00:00';
+    } else {
+      var FPS = 24;
+      var origin = null;
+      var raf = 0;
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      var tick = function (t) {
+        if (origin === null) origin = t;
+        var frames = Math.floor((t - origin) / 1000 * FPS);
+        tcEl.textContent =
+          pad(Math.floor(frames / (FPS * 3600)) % 24) + ':' +
+          pad(Math.floor(frames / (FPS * 60)) % 60) + ':' +
+          pad(Math.floor(frames / FPS) % 60) + ':' +
+          pad(frames % FPS);
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          cancelAnimationFrame(raf);
+        } else {
+          origin = null;
+          raf = requestAnimationFrame(tick);
+        }
+      });
+    }
+  }
 
   /* Mobile nav toggle */
   var toggle = document.getElementById('nav-toggle');

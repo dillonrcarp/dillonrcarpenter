@@ -11,8 +11,9 @@ Successor to the Squarespace site; architecture mirrors
 |---|---|---|
 | Hosting | Cloudflare Pages | `public/` is the publish directory, deploys on push to `main` |
 | Markup | Single `public/index.html` | Vanilla HTML, external stylesheet, no inline scripts/styles (CSP-clean) |
-| JS | `public/site.js` | Vanilla, dependency-free: nav, scroll reveal, click-to-load Vimeo, Formspree fetch submit, GA4 loader |
-| Fonts | Self-hosted variable woff2 | Space Grotesk + Inter, latin subsets, `font-display: swap` |
+| JS | `public/site.js` | Vanilla, dependency-free: nav, scroll reveal, hero timecode, click-to-load Vimeo, Formspree fetch submit, GA4 loader |
+| Design | "The Working Slate" | Film-set UI language — timecode HUD, framing brackets, SCENE numbering, REC-tally red, subtle SVG film grain (`img-src data:`) |
+| Fonts | Self-hosted woff2 | Anton (display), Archivo variable (body), Space Mono 400/700 (technical), latin, `font-display: swap` |
 | Video | Vimeo click-to-load facade | Poster + play button; iframe only injected on click, `dnt=1` |
 | Forms | Formspree | Native `POST` fallback; JS upgrades to on-page fetch submit |
 | Analytics | GA4 (dormant) | `site.js` only loads gtag once a real `G-…` ID is configured |
@@ -99,5 +100,5 @@ allows `player.vimeo.com` frames.
 ## Updating rates
 
 Prices appear in exactly two places and must stay in sync:
-the Services cards and the `PriceSpecification` blocks in the JSON-LD
+the Services rate rows and the `PriceSpecification` blocks in the JSON-LD
 (both in `public/index.html`).
