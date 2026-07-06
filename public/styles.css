@@ -369,6 +369,66 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: 1.02rem;
 }
 
+/* --- Clients strip ---------------------------------------------------- */
+
+.clients {
+  padding-top: clamp(44px, 7vw, 68px);
+  padding-bottom: clamp(44px, 7vw, 68px);
+}
+.clients-eye {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: var(--maxw);
+  margin: 0 auto 28px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.clients-eye::before,
+.clients-eye::after {
+  content: '';
+  height: 1px;
+  width: clamp(24px, 6vw, 60px);
+  background: var(--line);
+}
+.clients-list {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px 0;
+}
+.clients-list li {
+  position: relative;
+  font-family: var(--display);
+  font-size: clamp(1rem, 1.9vw, 1.35rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  padding: 0 clamp(15px, 2.1vw, 26px);
+  transition: color 0.2s;
+  cursor: default;
+}
+.clients-list li:hover { color: var(--text); }
+.clients-list li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -2px; top: 50%;
+  transform: translateY(-50%);
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--rec);
+  opacity: 0.5;
+}
+
 /* --- Hero ------------------------------------------------------------- */
 
 .hero {
@@ -588,6 +648,8 @@ img { max-width: 100%; height: auto; display: block; }
   transition: filter 0.35s, transform 0.5s ease;
 }
 .work-card:hover img { filter: saturate(1.05); transform: scale(1.04); }
+/* portrait sources: bias the 3:2 crop upward to keep the subject + monitor */
+.work-media--pov img { object-position: 50% 30%; }
 .work-tc {
   position: absolute;
   left: 10px; bottom: 10px;
