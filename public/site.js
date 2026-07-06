@@ -1,8 +1,8 @@
-/* dillonrcarpenter.com — vanilla JS, no dependencies */
+/* dillonrcarpenter.com : vanilla JS, no dependencies */
 (function () {
   'use strict';
 
-  /* Flag JS on so CSS can gate scroll-reveal hiding — a no-JS visitor
+  /* Flag JS on so CSS can gate scroll-reveal hiding. A no-JS visitor
      keeps everything visible (the .reveal default is fully shown). */
   document.documentElement.classList.add('js');
 
@@ -11,10 +11,10 @@
 
   /* ---- Fill these in (see README "Placeholders") -------------------- */
   var GA_MEASUREMENT_ID = 'G-044JQFGMR1';   // GA4 measurement ID
-  var VIMEO_REEL_ID = '429732990';          // vimeo.com/429732990 — Dillon R. Carpenter Showreel
+  var VIMEO_REEL_ID = '429732990';          // vimeo.com/429732990 : Dillon R. Carpenter Showreel
   /* -------------------------------------------------------------------- */
 
-  /* Google Analytics 4 — loads only once a real ID is configured, so the
+  /* Google Analytics 4 loads only once a real ID is configured, so the
      placeholder build makes zero third-party requests. */
   if (/^G-[A-Z0-9]{6,}$/.test(GA_MEASUREMENT_ID) && GA_MEASUREMENT_ID.indexOf('XXXX') === -1) {
     window.dataLayer = window.dataLayer || [];
@@ -31,7 +31,7 @@
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  /* Hero HUD timecode — a running SMPTE-style counter (HH:MM:SS:FF @ 24fps).
+  /* Hero HUD timecode: a running SMPTE-style counter (HH:MM:SS:FF @ 24fps).
      Purely decorative; holds at zero for reduced-motion, and pauses when the
      tab is hidden so it never spins in the background. */
   var tcEl = document.querySelector('[data-timecode]');
@@ -114,7 +114,7 @@
     iframe.src = 'https://player.vimeo.com/video/' + id + '?autoplay=1&dnt=1&title=0&byline=0&portrait=0&badge=0';
     iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
     iframe.setAttribute('allowfullscreen', '');
-    iframe.title = 'Showreel — Dillon R. Carpenter';
+    iframe.title = 'Dillon R. Carpenter Showreel';
     container.textContent = '';
     container.appendChild(iframe);
   }
@@ -127,7 +127,7 @@
         mountVimeo(reelFrame, VIMEO_REEL_ID);
       } else {
         var note = document.getElementById('reel-note');
-        if (note) note.textContent = 'The full reel is on its way to Vimeo — check back shortly.';
+        if (note) note.textContent = 'The full reel is on its way to Vimeo. Check back shortly.';
       }
     });
   }
@@ -155,7 +155,7 @@
       if (form.action.indexOf('FORMSPREE_FORM_ID') !== -1) {
         e.preventDefault();
         status.className = 'form-status err';
-        status.textContent = 'The form isn’t wired up yet — the Formspree form ID still needs to be configured.';
+        status.textContent = 'The form isn’t wired up yet. The Formspree form ID still needs to be configured.';
         return;
       }
       e.preventDefault();
@@ -171,7 +171,7 @@
         if (res.ok) {
           form.reset();
           status.className = 'form-status ok';
-          status.textContent = 'Got it — thanks! I’ll be in touch within one business day.';
+          status.textContent = 'Got it, thanks. I’ll be in touch within one business day.';
         } else {
           return res.json().then(function (data) {
             throw new Error((data.errors || []).map(function (er) { return er.message; }).join(', ') || 'Submission failed');

@@ -1,8 +1,8 @@
 /* ==========================================================================
-   dillonrcarpenter.com — "The Working Slate"
+   dillonrcarpenter.com : "The Working Slate"
    Hand-built, no framework, CSP-clean (no inline styles/scripts).
-   Design voice: a filmmaker's site built like a slate + camera monitor —
-   timecode, framing brackets, letterbox, SCENE numbering, REC tally.
+   Design voice: a filmmaker's site built like a slate + camera monitor.
+   Timecode, framing brackets, letterbox, SCENE numbering, REC tally.
    ========================================================================== */
 
 /* --- Fonts (self-hosted, CSP font-src 'self') ------------------------- */
@@ -49,7 +49,7 @@
   --muted:     #9aa0a8;   /* readable cool grey */
   --faint:     #6b7178;   /* decorative labels only */
   --rec:       #ff453a;   /* REC tally light */
-  --rec-btn:   #d23430;   /* filled button bg — keeps 4.5:1 with #fff */
+  --rec-btn:   #d23430;   /* filled button bg, keeps 4.5:1 with #fff */
   --rec-btn-h: #b9302c;
   --rec-dim:   rgba(255, 69, 58, 0.13);
   --bracket:   rgba(236, 235, 230, 0.5);
@@ -669,7 +669,7 @@ img { max-width: 100%; height: auto; display: block; }
   white-space: nowrap;
   text-align: right;
 }
-.rate-price span { color: var(--rec); padding: 0 3px; }
+.rate-price span { color: var(--rec); padding: 0 4px; }
 .rate-price em {
   font-family: var(--mono);
   font-style: normal;
