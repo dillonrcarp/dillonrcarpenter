@@ -12,6 +12,7 @@
   /* ---- Fill these in (see README "Placeholders") -------------------- */
   var GA_MEASUREMENT_ID = 'G-044JQFGMR1';   // GA4 measurement ID
   var VIMEO_REEL_ID = '429732990';          // vimeo.com/429732990 : Dillon R. Carpenter Showreel
+  var BUTTONDOWN_USERNAME = 'BUTTONDOWN_USERNAME';  // your Buttondown username (newsletter)
   /* -------------------------------------------------------------------- */
 
   /* Google Analytics 4 loads only once a real ID is configured, so the
@@ -185,4 +186,146 @@
       });
     });
   }
+
+  /* Newsletter slide-in (Field Notes). DOM built in JS so it stays CSP-clean.
+     Shows once after a delay or 45% scroll, remembers dismissal/signup, and
+     posts to Buttondown. No-JS visitors simply never see it. */
+  (function () {
+    var KEY = 'dc-nl';
+    var saved = '';
+    try { saved = window.localStorage.getItem(KEY) || ''; } catch (e) {}
+    if (saved === 'dismissed' || saved === 'subscribed') return;
+    if (!document.body) return;
+
+    var shown = false;
+    var timer = 0;
+
+    function remember(v) { try { window.localStorage.setItem(KEY, v); } catch (e) {} }
+
+    function build() {
+      var pop = document.createElement('aside');
+      pop.className = 'nl-pop';
+      pop.setAttribute('role', 'dialog');
+      pop.setAttribute('aria-label', 'Subscribe to Field Notes');
+
+      var close = document.createElement('button');
+      close.type = 'button';
+      close.className = 'nl-close';
+      close.setAttribute('aria-label', 'Close');
+      close.innerHTML = '&times;';
+
+      var eye = document.createElement('p');
+      eye.className = 'nl-pop-eye';
+      eye.textContent = 'Field Notes · Newsletter';
+
+      var title = document.createElement('h2');
+      title.className = 'nl-pop-title';
+      title.textContent = 'Notes worth keeping.';
+
+      var copy = document.createElement('p');
+      copy.className = 'nl-pop-copy';
+      copy.textContent = 'New Field Notes on video and marketing, straight to your inbox. No spam, unsubscribe anytime.';
+
+      var form = document.createElement('form');
+      form.className = 'nl-pop-form';
+      form.action = 'https://buttondown.com/api/emails/embed-subscribe/' + BUTTONDOWN_USERNAME;
+      form.method = 'post';
+      form.target = '_blank';
+      form.rel = 'noopener';
+
+      var label = document.createElement('label');
+      label.className = 'visually-hidden';
+      label.setAttribute('for', 'nl-email');
+      label.textContent = 'Email address';
+
+      var input = document.createElement('input');
+      input.type = 'email';
+      input.name = 'email';
+      input.id = 'nl-email';
+      input.required = true;
+      input.autocomplete = 'email';
+      input.placeholder = 'you@example.com';
+
+      var btn = document.createElement('button');
+      btn.type = 'submit';
+      btn.className = 'btn btn-fill nl-pop-btn';
+      btn.textContent = 'Subscribe';
+
+      var status = document.createElement('p');
+      status.className = 'nl-pop-status';
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
+
+      form.appendChild(label);
+      form.appendChild(input);
+      form.appendChild(btn);
+      pop.appendChild(close);
+      pop.appendChild(eye);
+      pop.appendChild(title);
+      pop.appendChild(copy);
+      pop.appendChild(form);
+      pop.appendChild(status);
+      document.body.appendChild(pop);
+
+      function hide(mark) {
+        pop.classList.remove('nl-open');
+        if (mark) remember(mark);
+        setTimeout(function () { if (pop.parentNode) pop.parentNode.removeChild(pop); }, 550);
+      }
+
+      close.addEventListener('click', function () { hide('dismissed'); });
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.keyCode === 27) && pop.classList.contains('nl-open')) hide('dismissed');
+      });
+
+      form.addEventListener('submit', function (e) {
+        if (BUTTONDOWN_USERNAME.indexOf('BUTTONDOWN_USERNAME') !== -1) {
+          e.preventDefault();
+          status.className = 'nl-pop-status err';
+          status.textContent = 'The newsletter isn’t wired up yet.';
+          return;
+        }
+        if (!window.fetch) return; // no fetch: fall through to native POST (opens a tab)
+        e.preventDefault();
+        btn.disabled = true;
+        status.className = 'nl-pop-status';
+        status.textContent = 'Signing you up…';
+        // Buttondown's embed endpoint isn't CORS-readable, so submit opaque and
+        // optimistically confirm (Buttondown double-opt-ins by email anyway).
+        fetch(form.action, { method: 'POST', mode: 'no-cors', body: new FormData(form) })
+          .then(function () {
+            status.className = 'nl-pop-status ok';
+            status.textContent = 'Almost there — check your inbox to confirm.';
+            remember('subscribed');
+            setTimeout(function () { hide(); }, 4000);
+          })
+          .catch(function () {
+            btn.disabled = false;
+            status.className = 'nl-pop-status err';
+            status.textContent = 'Something went sideways. Please try again.';
+          });
+      });
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { pop.classList.add('nl-open'); });
+      });
+    }
+
+    function trigger() {
+      if (shown) return;
+      shown = true;
+      if (timer) clearTimeout(timer);
+      window.removeEventListener('scroll', onScroll);
+      build();
+    }
+
+    function onScroll() {
+      var el = document.documentElement;
+      var max = el.scrollHeight - el.clientHeight;
+      if (max > 0 && el.scrollTop / max > 0.45) trigger();
+    }
+
+    timer = setTimeout(trigger, 18000);
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
 })();

@@ -31,6 +31,7 @@ python -m http.server 8000 -d public
 | What | Where | Notes |
 |---|---|---|
 | Extra `sameAs` profiles | `public/index.html` JSON-LD | Add LinkedIn/Instagram/YouTube URLs if wanted |
+| Buttondown username | `public/site.js` (`BUTTONDOWN_USERNAME`) | Newsletter slide-in. Until set, the popup shows but the form says "not wired up yet". See **Newsletter** below. |
 
 After changing `styles.css` or `site.js`, bump the `?v=` query string in
 `index.html` to bust the 30-day cache.
@@ -131,6 +132,35 @@ so far: `Marketing`, but the blog is intentionally not niched, so craft,
 production, and gear notes belong here too. Posts share the site's OG image
 (`/og-image.jpg`); drop a per-post image in `public/images/` and point the OG
 tags at it if you want a custom card.
+
+## Newsletter (Buttondown)
+
+The Field Notes newsletter is a **delayed slide-in** popup, built in `site.js`
+(no HTML block, no third-party script — the DOM is created in JS so it stays
+CSP-clean) and styled in `styles.css` (the `.nl-pop` block).
+
+Behavior: it appears once, after ~18s or 45% scroll (whichever is first), is
+dismissible (close button or Escape), and remembers the choice in
+`localStorage` (`dc-nl` = `dismissed` or `subscribed`) so it never nags a
+returning visitor. No-JS visitors never see it.
+
+**To turn it on:**
+
+1. Create a free [Buttondown](https://buttondown.com) account and note your
+   newsletter **username**.
+2. Set `BUTTONDOWN_USERNAME` in `public/site.js` and bump the `?v=` on
+   `site.js` sitewide.
+3. That's it — the CSP already allows `https://buttondown.com` in `connect-src`
+   and `form-action`, and no script is loaded from Buttondown.
+
+Signups post to `https://buttondown.com/api/emails/embed-subscribe/<username>`
+via a `no-cors` fetch (the endpoint isn't CORS-readable, so the UI optimistically
+shows "check your inbox to confirm"; Buttondown double-opt-ins by email). With
+JS off, the form falls back to a native POST that opens Buttondown in a new tab.
+
+Buttondown is the sender *and* the list — it collects and mails issues. Swapping
+to another provider (MailerLite, EmailOctopus, etc.) means changing the form
+`action` in `site.js` and the one CSP host in `_headers`; no other changes.
 
 ## Updating rates
 

@@ -1404,3 +1404,113 @@ footer::before {
   font-weight: 700;
   color: var(--rec);
 }
+
+/* ==========================================================================
+   Newsletter slide-in (Field Notes). Injected by site.js, CSP-clean.
+   Tasteful delayed slide-in, dismissible, one-time (localStorage).
+   ========================================================================== */
+
+.nl-pop {
+  position: fixed;
+  z-index: 210;
+  right: clamp(14px, 3vw, 28px);
+  bottom: clamp(14px, 3vw, 28px);
+  width: min(370px, calc(100vw - 28px));
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,69,58,0.06), transparent 60%),
+    var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--rec);
+  padding: 22px clamp(18px, 3vw, 24px) 24px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transform: translateY(150%);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;
+  will-change: transform, opacity;
+}
+.nl-pop.nl-open { transform: none; opacity: 1; }
+
+.nl-close {
+  position: absolute;
+  top: 8px; right: 10px;
+  width: 30px; height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.nl-close:hover { color: var(--rec); }
+
+.nl-pop-eye {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rec);
+  margin-bottom: 12px;
+  padding-right: 26px;
+}
+.nl-pop-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+}
+.nl-pop-copy {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.nl-pop-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.nl-pop-form input[type="email"] {
+  flex: 1 1 160px;
+  min-width: 0;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 0.92rem;
+  padding: 12px 13px;
+  border-radius: 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+.nl-pop-form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--rec);
+  background: var(--panel-2);
+}
+.nl-pop-form input::placeholder { color: rgba(154,160,168,0.55); }
+.nl-pop-btn {
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  font-size: 0.7rem;
+}
+.nl-pop-btn[disabled] { opacity: 0.55; cursor: wait; }
+.nl-pop-status {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  margin-top: 12px;
+  min-height: 1em;
+  color: var(--muted);
+}
+.nl-pop-status.ok { color: #7fd18a; }
+.nl-pop-status.err { color: var(--rec); }
+
+@media (max-width: 460px) {
+  .nl-pop { right: 10px; left: 10px; bottom: 10px; width: auto; }
+}
