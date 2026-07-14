@@ -96,6 +96,35 @@ Publish a pillar when **the pillar page itself is written and at least ~3 of its
 clusters exist** (Pillar 1 already has 1). Until then, keep writing Field Notes
 tagged to a pillar; you can retro-link them up the moment the pillar goes live.
 
+## Publishing cadence: batch-then-drip
+
+Should the whole plan drop at once, or stagger out? The forces cut both ways, and
+they resolve to a hybrid (grounded in a 2026 research pass, filed in the vault as
+"dillonrcarpenter.com Blog and Content Strategy").
+
+- **Cluster mechanics want batching.** A pillar with no clusters underperforms, so
+  a topic needs enough published together to function.
+- **Everything else wants a cadence.** Consistency beats bulk for SEO: steady
+  publishing gets recrawled and indexed faster than a burst-then-silence. A drip
+  feeds the newsletter (each post is a send), is sustainable solo, and lets the
+  cluster map evolve from what actually lands.
+- **Non-issues at this size.** Crawl budget only matters above ~a few thousand
+  URLs. And a new site is trust-gated regardless (sparse crawling for the first
+  weeks, months to mature), so a dump would not rank fast anyway.
+
+**Approach: cluster launch, then cadence.**
+
+1. Batch a functional core: a pillar plus 3 to 4 clusters, published together, so
+   the cluster works and there is one real launch and newsletter moment.
+2. Then drip about one Field Note every 2 weeks. Pick a cadence you can hold;
+   hitting every-2-weeks beats promising weekly and going dry. Each drip completes
+   a cluster or seeds the next pillar, sends a newsletter, and teaches what lands.
+
+Two traps to avoid: the **burnout dump** (one big push, then silence) and the
+**lonely pillar** (a pillar slow-dripped with no clusters). And do not stagger by
+hoarding finished work: search engines reward ongoing production, not slow-releasing
+a backlog, so staggering only helps when it matches your real writing pace.
+
 ## Checklist: publish a pillar
 
 1. Copy `docs/templates/guide-template.html` to
