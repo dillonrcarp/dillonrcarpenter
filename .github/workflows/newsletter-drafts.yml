@@ -1,0 +1,45 @@
+name: Newsletter drafts
+
+# When a new Field Note updates the RSS feed, create a Buttondown DRAFT for it.
+# Same in-repo, GitHub-Actions pattern as eastondivision's Facebook sync.
+# It NEVER sends: drafts only. You review and send from Buttondown.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/blog/feed.xml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: newsletter-drafts
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Draft new posts to Buttondown
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+        run: node .github/scripts/newsletter-drafts.mjs
+
+      - name: Record which posts have been drafted
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/newsletter-seen.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: record newsletter drafts"
+            git pull --rebase
+            git push
+          fi

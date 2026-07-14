@@ -163,6 +163,21 @@ Buttondown is the sender *and* the list — it collects and mails issues. Swappi
 to another provider (MailerLite, EmailOctopus, etc.) means changing the form
 `action` in `site.js` and the one CSP host in `_headers`; no other changes.
 
+### Auto-drafting from the blog (GitHub Action)
+
+New Field Notes become Buttondown **drafts** automatically, via
+`.github/workflows/newsletter-drafts.yml` — the same in-repo GitHub Actions
+pattern as eastondivision's Facebook sync (no Cloudflare Worker needed). When a
+post updates `public/blog/feed.xml`, the Action runs
+`.github/scripts/newsletter-drafts.mjs`, which creates a draft in Buttondown for
+each new post (it **never sends**) and records it in
+`.github/newsletter-seen.json`. You review and send from Buttondown.
+
+**Setup:** add a `BUTTONDOWN_API_KEY` repository secret (GitHub → Settings →
+Secrets and variables → Actions). That's the only step. Trigger a test run any
+time from the Actions tab (`workflow_dispatch`). The state file is pre-seeded
+with the first post, so it won't re-draft anything already published.
+
 ## Analytics events (GA4)
 
 GA4 loads from `site.js` once `GA_MEASUREMENT_ID` is a real `G-…` ID (it is:

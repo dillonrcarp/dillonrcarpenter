@@ -898,6 +898,21 @@ footer::before {
   transition: color 0.2s;
 }
 .footer-links a:hover { color: var(--rec); }
+.footer-social {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  list-style: none;
+  margin-bottom: 24px;
+}
+.footer-social a {
+  display: inline-flex;
+  color: var(--muted);
+  transition: color 0.2s, transform 0.2s;
+}
+.footer-social a:hover { color: var(--rec); transform: translateY(-2px); }
+.footer-social svg { width: 18px; height: 18px; fill: currentColor; display: block; }
 .footer-copy {
   font-family: var(--mono);
   font-size: 0.74rem;
