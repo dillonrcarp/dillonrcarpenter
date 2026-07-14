@@ -31,7 +31,7 @@ python -m http.server 8000 -d public
 | What | Where | Notes |
 |---|---|---|
 | Extra `sameAs` profiles | `public/index.html` JSON-LD | Add LinkedIn/Instagram/YouTube URLs if wanted |
-| Buttondown username | `public/site.js` (`BUTTONDOWN_USERNAME`) | Newsletter slide-in. Stays **dormant** (never shows) until this is set, same as the dormant GA4 ID. See **Newsletter** below. |
+| Buttondown username | `public/site.js` (`BUTTONDOWN_USERNAME`) | **Set to `dillonrcarp`** — newsletter slide-in is live. (Was dormant until set, like the GA4 ID.) See **Newsletter** below. |
 
 After changing `styles.css` or `site.js`, bump the `?v=` query string in
 `index.html` to bust the 30-day cache.

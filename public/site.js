@@ -12,7 +12,7 @@
   /* ---- Fill these in (see README "Placeholders") -------------------- */
   var GA_MEASUREMENT_ID = 'G-044JQFGMR1';   // GA4 measurement ID
   var VIMEO_REEL_ID = '429732990';          // vimeo.com/429732990 : Dillon R. Carpenter Showreel
-  var BUTTONDOWN_USERNAME = 'BUTTONDOWN_USERNAME';  // your Buttondown username (newsletter)
+  var BUTTONDOWN_USERNAME = 'dillonrcarp';  // Buttondown username (newsletter)
   /* -------------------------------------------------------------------- */
 
   /* Google Analytics 4 loads only once a real ID is configured, so the
