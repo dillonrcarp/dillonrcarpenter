@@ -1,0 +1,26 @@
+# Cloudflare Worker: drafts a Buttondown newsletter whenever a new Field Note
+# appears in the blog RSS feed. A free replacement for Buttondown's pay-gated
+# RSS-to-email. Deployed SEPARATELY from the Pages site (see README.md).
+#
+# The Pages project only serves ./public, so this worker/ directory is ignored
+# by the site deploy and never affects the live site.
+
+name = "dillonrcarpenter-newsletter"
+main = "src/index.js"
+compatibility_date = "2026-04-01"
+
+# Check the feed once a day at 13:00 UTC (~8-9am US Eastern).
+[triggers]
+crons = ["0 13 * * *"]
+
+[vars]
+FEED_URL = "https://dillonrcarpenter.com/blog/feed.xml"
+
+# Remembers which posts have already been drafted (create it once; see README).
+[[kv_namespaces]]
+binding = "SEEN"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# Secrets are NOT stored here. Set them once with wrangler:
+#   wrangler secret put BUTTONDOWN_API_KEY     # from Buttondown -> Settings -> API
+#   wrangler secret put MANUAL_TRIGGER_KEY     # optional; guards the test endpoint
