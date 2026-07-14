@@ -191,6 +191,8 @@
      Shows once after a delay or 45% scroll, remembers dismissal/signup, and
      posts to Buttondown. No-JS visitors simply never see it. */
   (function () {
+    // Dormant until a Buttondown username is configured (like the GA4 ID).
+    if (BUTTONDOWN_USERNAME.indexOf('BUTTONDOWN_USERNAME') !== -1) return;
     var KEY = 'dc-nl';
     var saved = '';
     try { saved = window.localStorage.getItem(KEY) || ''; } catch (e) {}
