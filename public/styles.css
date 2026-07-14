@@ -1359,3 +1359,48 @@ footer::before {
   font-family: var(--mono);
   flex: none;
 }
+
+/* --- Post TL;DR / key-takeaways box ----------------------------------- */
+
+.post-tldr {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--rec);
+  padding: 24px clamp(20px, 3vw, 30px);
+  margin: 8px 0 12px;
+}
+.post-tldr-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+.post-tldr ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: tldr;
+}
+.post-tldr li {
+  counter-increment: tldr;
+  position: relative;
+  padding-left: 34px;
+  margin-bottom: 12px;
+  color: var(--text);
+  font-size: 0.97rem;
+  line-height: 1.55;
+}
+.post-tldr li:last-child { margin-bottom: 0; }
+.post-tldr li::before {
+  content: counter(tldr, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--rec);
+}
