@@ -12,7 +12,35 @@ refuses to send without explicit confirmation, so this is belt-and-suspenders.)
 This lives outside `public/`, so the Pages site deploy ignores it. It runs only
 after you deploy it here with `wrangler`.
 
-## One-time setup
+## Deploy via the Cloudflare dashboard (no CLI)
+
+All of this works in the browser. When you configure a Worker in the dashboard,
+the repo's `wrangler.toml` is **not** used — you set the binding, variables, and
+cron in the dashboard instead. The names must match the code exactly: `SEEN`,
+`FEED_URL`, `BUTTONDOWN_API_KEY`, and (optional) `MANUAL_TRIGGER_KEY`.
+
+1. **Create the KV namespace.** Dashboard → *Storage & Databases → KV* →
+   "Create a namespace" → name it e.g. `newsletter-seen`.
+2. **Create the Worker.** *Workers & Pages → Create → Workers* → start from
+   "Hello World" → name it `dillonrcarpenter-newsletter` → Deploy. Then
+   **Edit code**: delete the starter and paste the full contents of
+   `src/index.js` from this folder → Deploy.
+3. **Bind the KV namespace.** The Worker → *Settings → Bindings → Add → KV
+   namespace*. Variable name **`SEEN`**, namespace `newsletter-seen` → Deploy.
+4. **Add the variable + secrets.** *Settings → Variables and Secrets*:
+   - Plaintext variable **`FEED_URL`** = `https://dillonrcarpenter.com/blog/feed.xml`
+   - Secret **`BUTTONDOWN_API_KEY`** = your key from Buttondown → Settings → API
+     (mark it **Encrypt/secret** so it's hidden).
+   - Optional secret **`MANUAL_TRIGGER_KEY`** = any random string (guards the test URL).
+   - Deploy after adding.
+5. **Add the cron trigger.** *Settings → Triggers → Cron Triggers → Add* →
+   `0 13 * * *` (daily, 13:00 UTC) → Add.
+
+To test, open `https://dillonrcarpenter-newsletter.<your-subdomain>.workers.dev/?key=YOUR_MANUAL_TRIGGER_KEY`
+and check Buttondown for a new draft. (Dashboard labels shift as Cloudflare
+updates; go by the feature names: KV, Bindings, Variables and Secrets, Cron Triggers.)
+
+## Alternative: setup via CLI (wrangler)
 
 From this `worker/` directory:
 
