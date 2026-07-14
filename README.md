@@ -42,8 +42,9 @@ All headers ship from `public/_headers` (Cloudflare Pages syntax):
 
 - **Content-Security-Policy** — `default-src 'none'` allowlist. No inline scripts or
   styles anywhere in the site. Only `player.vimeo.com` may be framed; forms may only
-  POST to Formspree; scripts only from self + googletagmanager (the one documented
-  exception, for GA4 — gtag.js cannot be SRI-pinned by design).
+  POST to Formspree or Buttondown; scripts only from self, googletagmanager (GA4), and
+  player.vimeo.com (the Vimeo Player SDK, lazy-loaded only after a reel play for video
+  analytics). Neither third-party script can be SRI-pinned by design.
 - **X-Frame-Options: DENY** + `frame-ancestors 'none'` — the site cannot be embedded.
 - **Permissions-Policy** — everything off except autoplay/fullscreen/PiP delegated to
   the Vimeo player.
@@ -170,7 +171,10 @@ GA4 loads from `site.js` once `GA_MEASUREMENT_ID` is a real `G-…` ID (it is:
 
 | Event | Fires when |
 |---|---|
-| `reel_play` | The showreel (or a Work grid video) is played. Params: `id`, plus `location: work` for grid videos |
+| `reel_play` | The showreel/Work facade is clicked (load intent). Params: `id`, plus `location: work` for grid videos |
+| `video_start` | Vimeo playback actually begins (via the Player SDK, lazy-loaded on first play). Params: `video_provider`, `video_title` |
+| `video_progress` | Playback passes 10 / 25 / 50 / 75%. Params add `video_percent`, `video_current_time`, `video_duration` |
+| `video_complete` | The video finishes (`video_percent: 100`) |
 | `quote_submit` | The quote form submits successfully |
 | `newsletter_shown` | The newsletter slide-in appears |
 | `newsletter_subscribe` | A visitor submits the newsletter form |

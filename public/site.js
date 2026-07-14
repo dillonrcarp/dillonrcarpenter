@@ -115,14 +115,78 @@
 
   /* Click-to-load Vimeo embed (facade keeps the page free of iframes
      until the visitor asks for the video). dnt=1 disables Vimeo tracking. */
-  function mountVimeo(container, id) {
+  function mountVimeo(container, id, title) {
     var iframe = document.createElement('iframe');
     iframe.src = 'https://player.vimeo.com/video/' + id + '?autoplay=1&dnt=1&title=0&byline=0&portrait=0&badge=0';
     iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
     iframe.setAttribute('allowfullscreen', '');
-    iframe.title = 'Dillon R. Carpenter Showreel';
+    iframe.title = title || 'Dillon R. Carpenter Showreel';
     container.textContent = '';
     container.appendChild(iframe);
+    trackVimeoProgress(iframe, title || 'Showreel');
+  }
+
+  /* Lazy-load the Vimeo Player SDK (only after a play), then report GA4 video
+     events. No SDK loads until someone actually watches. dnt=1 stays on, so
+     Vimeo's own tracking is still off; the Player API works regardless. */
+  var vimeoApiState = 0; // 0 idle, 1 loading, 2 ready
+  var vimeoApiQueue = [];
+  function withVimeoApi(cb) {
+    if (vimeoApiState === 2) { cb(); return; }
+    vimeoApiQueue.push(cb);
+    if (vimeoApiState === 1) return;
+    vimeoApiState = 1;
+    var s = document.createElement('script');
+    s.src = 'https://player.vimeo.com/api/player.js';
+    s.async = true;
+    s.onload = function () {
+      vimeoApiState = 2;
+      vimeoApiQueue.forEach(function (fn) { fn(); });
+      vimeoApiQueue = [];
+    };
+    s.onerror = function () { vimeoApiState = 0; vimeoApiQueue = []; }; // give up quietly; playback still works
+    document.head.appendChild(s);
+  }
+
+  function trackVimeoProgress(iframe, title) {
+    withVimeoApi(function () {
+      if (!(window.Vimeo && window.Vimeo.Player)) return;
+      var player = new window.Vimeo.Player(iframe);
+      var started = false;
+      var thresholds = [10, 25, 50, 75];
+      var hit = {};
+      var dur = 0;
+      player.getDuration().then(function (d) { dur = d || 0; }).catch(function () {});
+      player.on('play', function () {
+        if (started) return;
+        started = true;
+        track('video_start', { video_provider: 'vimeo', video_title: title });
+      });
+      player.on('timeupdate', function (data) {
+        var pct = Math.floor((data.percent || 0) * 100);
+        for (var i = 0; i < thresholds.length; i++) {
+          var m = thresholds[i];
+          if (pct >= m && !hit[m]) {
+            hit[m] = true;
+            track('video_progress', {
+              video_provider: 'vimeo',
+              video_title: title,
+              video_percent: m,
+              video_current_time: Math.round(data.seconds || 0),
+              video_duration: Math.round(data.duration || dur)
+            });
+          }
+        }
+      });
+      player.on('ended', function (data) {
+        track('video_complete', {
+          video_provider: 'vimeo',
+          video_title: title,
+          video_percent: 100,
+          video_duration: Math.round((data && data.duration) || dur)
+        });
+      });
+    });
   }
 
   var reelFrame = document.getElementById('reel-frame');
@@ -130,7 +194,7 @@
   if (reelFrame && reelPlay) {
     reelPlay.addEventListener('click', function () {
       if (/^\d+$/.test(VIMEO_REEL_ID)) {
-        mountVimeo(reelFrame, VIMEO_REEL_ID);
+        mountVimeo(reelFrame, VIMEO_REEL_ID, 'Showreel');
         track('reel_play', { id: VIMEO_REEL_ID });
       } else {
         var note = document.getElementById('reel-note');
@@ -149,7 +213,7 @@
       var frame = document.createElement('div');
       frame.className = 'reel-frame';
       a.replaceWith(frame);
-      mountVimeo(frame, id);
+      mountVimeo(frame, id, 'Work video');
       track('reel_play', { id: id, location: 'work' });
     });
   });
