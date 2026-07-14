@@ -162,6 +162,26 @@ Buttondown is the sender *and* the list — it collects and mails issues. Swappi
 to another provider (MailerLite, EmailOctopus, etc.) means changing the form
 `action` in `site.js` and the one CSP host in `_headers`; no other changes.
 
+## Analytics events (GA4)
+
+GA4 loads from `site.js` once `GA_MEASUREMENT_ID` is a real `G-…` ID (it is:
+`G-044JQFGMR1`, stream "Portfolio"). Beyond the default Enhanced Measurement
+(page views, scrolls, outbound clicks), `site.js` fires these custom events:
+
+| Event | Fires when |
+|---|---|
+| `reel_play` | The showreel (or a Work grid video) is played. Params: `id`, plus `location: work` for grid videos |
+| `quote_submit` | The quote form submits successfully |
+| `newsletter_shown` | The newsletter slide-in appears |
+| `newsletter_subscribe` | A visitor submits the newsletter form |
+| `newsletter_dismiss` | The slide-in is closed or dismissed |
+
+All are guarded (`typeof window.gtag === 'function'`), so they no-op when GA
+isn't loaded. To count them as conversions, mark `quote_submit` and
+`newsletter_subscribe` (and optionally `reel_play`) as **Key events** in
+GA4 → Admin → Events. They appear in the Events report within ~24h of real
+traffic.
+
 ## Updating rates
 
 Prices appear in exactly two places and must stay in sync:

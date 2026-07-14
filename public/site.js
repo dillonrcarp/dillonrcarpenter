@@ -28,6 +28,11 @@
     document.head.appendChild(ga);
   }
 
+  /* Tiny GA4 event helper. No-ops when GA isn't loaded (dormant ID). */
+  function track(name, params) {
+    if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+  }
+
   /* Footer year */
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
@@ -126,6 +131,7 @@
     reelPlay.addEventListener('click', function () {
       if (/^\d+$/.test(VIMEO_REEL_ID)) {
         mountVimeo(reelFrame, VIMEO_REEL_ID);
+        track('reel_play', { id: VIMEO_REEL_ID });
       } else {
         var note = document.getElementById('reel-note');
         if (note) note.textContent = 'The full reel is on its way to Vimeo. Check back shortly.';
@@ -144,6 +150,7 @@
       frame.className = 'reel-frame';
       a.replaceWith(frame);
       mountVimeo(frame, id);
+      track('reel_play', { id: id, location: 'work' });
     });
   });
 
@@ -173,6 +180,7 @@
           form.reset();
           status.className = 'form-status ok';
           status.textContent = 'Got it, thanks. I’ll be in touch within one business day.';
+          track('quote_submit');
         } else {
           return res.json().then(function (data) {
             throw new Error((data.errors || []).map(function (er) { return er.message; }).join(', ') || 'Submission failed');
@@ -272,6 +280,7 @@
       function hide(mark) {
         pop.classList.remove('nl-open');
         if (mark) remember(mark);
+        if (mark === 'dismissed') track('newsletter_dismiss');
         setTimeout(function () { if (pop.parentNode) pop.parentNode.removeChild(pop); }, 550);
       }
 
@@ -297,8 +306,9 @@
         fetch(form.action, { method: 'POST', mode: 'no-cors', body: new FormData(form) })
           .then(function () {
             status.className = 'nl-pop-status ok';
-            status.textContent = 'Almost there — check your inbox to confirm.';
+            status.textContent = 'Almost there. Check your inbox to confirm.';
             remember('subscribed');
+            track('newsletter_subscribe');
             setTimeout(function () { hide(); }, 4000);
           })
           .catch(function () {
@@ -311,6 +321,7 @@
       requestAnimationFrame(function () {
         requestAnimationFrame(function () { pop.classList.add('nl-open'); });
       });
+      track('newsletter_shown');
     }
 
     function trigger() {
