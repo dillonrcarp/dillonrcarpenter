@@ -97,6 +97,41 @@ Copy the commented stub in the Work section of `index.html`: an
 click-to-load player automatically. No other changes needed — the CSP already
 allows `player.vimeo.com` frames.
 
+## Blog ("Field Notes")
+
+The blog is hand-authored static HTML, same as the rest of the site: no build
+step, no CMS, CSP-clean. It lives under `public/blog/`:
+
+| Path | Serves at | What it is |
+|---|---|---|
+| `public/blog/index.html` | `/blog/` | The log: lists every post, newest first |
+| `public/blog/<slug>/index.html` | `/blog/<slug>/` | One post |
+| `public/blog/feed.xml` | `/blog/feed.xml` | RSS 2.0 feed |
+
+Styling reuses the "Working Slate" tokens and lives in the `Field Notes (blog)`
+section at the bottom of `styles.css` (logbook/EDL list on the index,
+`.post-body` reading typography on posts). No new CSP origins are needed:
+posts use only self-hosted CSS/fonts/images. A post may embed Vimeo (already
+allowed) by reusing the `data-vimeo-id` pattern from the Work section.
+
+**To add a post:**
+
+1. Copy `public/blog/the-video-is-done-now-what/index.html` to
+   `public/blog/<new-slug>/index.html`. Update the `<title>`, meta description,
+   canonical/OG URLs, the `BlogPosting` JSON-LD (headline, dates, section,
+   keywords), the visible title/date/category/read-time, and the body.
+2. Prepend a new `<a class="log-entry">` block to the list in
+   `public/blog/index.html` (newest first) and bump the `LOG` number. Add the
+   post to that page's `blogPost` JSON-LD array too.
+3. Add a `<url>` for the post to `public/sitemap.xml` and prepend an `<item>`
+   to `public/blog/feed.xml` (update `<lastBuildDate>`).
+
+Write prose in Dillon's voice: first person, direct, no dashes. Category tags
+so far: `Marketing`, but the blog is intentionally not niched, so craft,
+production, and gear notes belong here too. Posts share the site's OG image
+(`/og-image.jpg`); drop a per-post image in `public/images/` and point the OG
+tags at it if you want a custom card.
+
 ## Updating rates
 
 Prices appear in exactly two places and must stay in sync:

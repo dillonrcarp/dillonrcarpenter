@@ -40,3 +40,9 @@
 
 /sitemap.xml
   Cache-Control: public, max-age=3600
+
+/blog/*
+  Cache-Control: public, max-age=300, s-maxage=86400
+
+/blog/feed.xml
+  Cache-Control: public, max-age=3600

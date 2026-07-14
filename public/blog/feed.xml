@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dillon R. Carpenter: Field Notes</title>
+    <link>https://dillonrcarpenter.com/blog/</link>
+    <description>Working notes on video, digital marketing, and getting small businesses seen. From Muncie, Indiana videographer and filmmaker Dillon R. Carpenter.</description>
+    <language>en-us</language>
+    <atom:link href="https://dillonrcarpenter.com/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Jul 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>The video is done. Now what?</title>
+      <link>https://dillonrcarpenter.com/blog/the-video-is-done-now-what/</link>
+      <guid isPermaLink="true">https://dillonrcarpenter.com/blog/the-video-is-done-now-what/</guid>
+      <pubDate>Mon, 14 Jul 2026 12:00:00 +0000</pubDate>
+      <category>Marketing</category>
+      <description>A finished video that nobody sees is an expensive home movie. Here is the distribution playbook I walk every client through the day we deliver: cut for the platform, win the first frame, post where your customers are, turn one shoot into ten posts, and measure the number that actually pays you.</description>
+    </item>
+  </channel>
+</rss>
