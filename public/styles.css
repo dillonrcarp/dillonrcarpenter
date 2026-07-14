@@ -1228,3 +1228,134 @@ footer::before {
   .log-side { display: flex; gap: 16px; }
   .log-aside { display: none; }
 }
+
+/* ==========================================================================
+   Guides (pillar pages) : evergreen topic hubs. Reuses .post / .post-body.
+   Adds breadcrumb, a "contents" shot-list TOC, a no-JS FAQ (<details>),
+   and a cluster-link block. Not yet linked from public nav (see
+   docs/content-strategy.md for the launch checklist).
+   ========================================================================== */
+
+.guide-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+.guide-breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.guide-breadcrumb a:hover { color: var(--rec); }
+.guide-breadcrumb .sep { color: var(--rec); }
+.guide-breadcrumb [aria-current="page"] { color: var(--text); }
+
+/* Contents: a slate "shot list" of anchored sections */
+.guide-toc {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--rec);
+  padding: 22px clamp(18px, 3vw, 28px);
+  margin: 40px 0 12px;
+}
+.guide-toc h2 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+.guide-toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+.guide-toc li { counter-increment: toc; margin: 0; }
+.guide-toc a {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  padding: 9px 0;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-2);
+  transition: color 0.2s;
+}
+.guide-toc li:last-child a { border-bottom: 0; }
+.guide-toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--rec);
+  flex: none;
+}
+.guide-toc a:hover { color: var(--rec); }
+
+/* FAQ: native <details>, zero JS, CSP-clean */
+.guide-faq { margin-top: 2.6em; border-top: 1px solid var(--line); }
+.guide-faq > h2 {
+  font-family: var(--body);
+  font-weight: 680;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  margin: 1em 0 0.4em;
+}
+.guide-faq details { border-bottom: 1px solid var(--line-2); }
+.guide-faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 20px 34px 20px 0;
+  position: relative;
+  font-family: var(--body);
+  font-weight: 640;
+  font-size: 1.08rem;
+  color: var(--text);
+}
+.guide-faq summary::-webkit-details-marker { display: none; }
+.guide-faq summary::after {
+  content: '+';
+  position: absolute;
+  right: 4px;
+  top: 16px;
+  font-family: var(--mono);
+  color: var(--rec);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.guide-faq details[open] summary::after { content: '\2212'; }
+.guide-faq details > *:not(summary) { margin: 0 0 20px; color: var(--muted); }
+
+/* Cluster links: the posts that ladder into this pillar */
+.guide-related {
+  margin-top: 2.8em;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+}
+.guide-related h2 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.guide-related ul { list-style: none; margin: 0; padding: 0; }
+.guide-related li { border-bottom: 1px solid var(--line-2); }
+.guide-related a {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 15px 0;
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.guide-related a:hover { color: var(--rec); }
+.guide-related a::before {
+  content: '\2192';
+  color: var(--rec);
+  font-family: var(--mono);
+  flex: none;
+}

@@ -1,0 +1,213 @@
+<!--
+  PILLAR / GUIDE PAGE TEMPLATE  (not deployed: lives in docs/, outside public/)
+
+  To publish a guide:
+  1. Copy this file to  public/guides/<slug>/index.html
+  2. Replace every {{PLACEHOLDER}} and the TODO sections below.
+  3. Follow the "Publish a pillar" checklist in docs/content-strategy.md
+     (add the Guides nav item sitewide, build/append the /guides/ hub, add to
+     sitemap.xml, bump the ?v= on styles.css sitewide, wire cluster links).
+
+  Design: reuses the .post / .post-body reading frame plus guide-only pieces
+  (.guide-breadcrumb, .guide-toc, .guide-faq, .guide-related). CSP-clean:
+  self-hosted CSS/fonts/images only, native <details> for the FAQ (no JS).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{GUIDE TITLE}} | Dillon R. Carpenter</title>
+  <meta name="description" content="{{META DESCRIPTION, 140-160 chars. Comprehensive, keyword-led.}}" />
+  <link rel="canonical" href="https://dillonrcarpenter.com/guides/{{slug}}/" />
+  <meta name="theme-color" content="#0a0b0d" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{GUIDE TITLE}}" />
+  <meta property="og:description" content="{{SHORT SOCIAL DESCRIPTION}}" />
+  <meta property="og:url" content="https://dillonrcarpenter.com/guides/{{slug}}/" />
+  <meta property="og:image" content="https://dillonrcarpenter.com/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{GUIDE TITLE}}" />
+  <meta name="twitter:description" content="{{SHORT SOCIAL DESCRIPTION}}" />
+  <meta name="twitter:image" content="https://dillonrcarpenter.com/og-image.jpg" />
+
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/anton.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-var.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/spacemono-400.woff2" crossorigin />
+  <link rel="stylesheet" href="/styles.css?v=7" />
+  <link rel="alternate" type="application/rss+xml" title="Dillon R. Carpenter: Field Notes" href="/blog/feed.xml" />
+
+  <!-- Three schema blocks: the guide itself, its breadcrumb trail, and its FAQ.
+       Inline application/ld+json is data, not script, so the CSP allows it. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{GUIDE TITLE}}",
+    "description": "{{META DESCRIPTION}}",
+    "datePublished": "{{YYYY-MM-DD}}",
+    "dateModified": "{{YYYY-MM-DD}}",
+    "url": "https://dillonrcarpenter.com/guides/{{slug}}/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://dillonrcarpenter.com/guides/{{slug}}/" },
+    "image": "https://dillonrcarpenter.com/og-image.jpg",
+    "articleSection": "{{PILLAR TOPIC}}",
+    "author": { "@type": "Person", "name": "Dillon R. Carpenter", "url": "https://dillonrcarpenter.com/" },
+    "publisher": { "@type": "Person", "name": "Dillon R. Carpenter", "url": "https://dillonrcarpenter.com/" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dillonrcarpenter.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://dillonrcarpenter.com/guides/" },
+      { "@type": "ListItem", "position": 3, "name": "{{GUIDE TITLE}}", "item": "https://dillonrcarpenter.com/guides/{{slug}}/" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "{{FAQ QUESTION 1}}",
+        "acceptedAnswer": { "@type": "Answer", "text": "{{FAQ ANSWER 1, plain text, mirror the visible answer}}" }
+      }
+      /* Add one object per FAQ. Keep questions/answers identical to the visible .guide-faq below. */
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<nav id="main-nav" aria-label="Main">
+  <a href="/" class="nav-wordmark">
+    <span class="slate-sticks" aria-hidden="true"></span>
+    Dillon <b>R.</b> Carpenter
+  </a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="/#reel">Reel</a></li>
+    <li><a href="/#work">Work</a></li>
+    <li><a href="/#services">Rates</a></li>
+    <li><a href="/#about">About</a></li>
+    <li><a href="/guides/" aria-current="page">Guides</a></li>
+    <li><a href="/blog/">Field Notes</a></li>
+    <li><a href="/#quote" class="nav-cta">Book the Shoot</a></li>
+  </ul>
+</nav>
+
+<main id="main">
+
+<article class="post">
+  <nav class="guide-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="/guides/">Guides</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">{{SHORT TITLE}}</span>
+  </nav>
+
+  <p class="eye"><span class="eye-idx">GUIDE</span> {{PILLAR TOPIC}}</p>
+  <h1 class="post-title">{{GUIDE TITLE}}</h1>
+  <div class="post-meta">
+    <span>Updated <time datetime="{{YYYY-MM-DD}}">{{Mon DD, YYYY}}</time></span>
+    <span class="dot" aria-hidden="true">/</span>
+    <span>{{XX}} min read</span>
+    <span class="dot" aria-hidden="true">/</span>
+    <span>Guide</span>
+  </div>
+
+  <div class="post-body">
+    <p class="post-lede">{{One or two sentence promise: who this is for and what they will be able to do after reading. This is the page that should rank for the broad topic, so open with the head keyword naturally.}}</p>
+
+    <nav class="guide-toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#section-1">{{Section 1 heading}}</a></li>
+        <li><a href="#section-2">{{Section 2 heading}}</a></li>
+        <li><a href="#section-3">{{Section 3 heading}}</a></li>
+        <li><a href="#faq">Frequently asked questions</a></li>
+      </ol>
+    </nav>
+
+    <!-- TODO: the guide body. Pillars run long (aim 1,500-3,000+ words).
+         Each <h2> gets an id so the Contents list can jump to it.
+         Link OUT to the cluster posts in prose where relevant, and each
+         cluster post should link BACK up to this guide. -->
+
+    <section id="section-1">
+      <h2><span class="h-idx" aria-hidden="true">01</span>{{Section 1 heading}}</h2>
+      <p>{{...}}</p>
+    </section>
+
+    <section id="section-2">
+      <h2><span class="h-idx" aria-hidden="true">02</span>{{Section 2 heading}}</h2>
+      <p>{{...}}</p>
+    </section>
+
+    <section id="section-3">
+      <h2><span class="h-idx" aria-hidden="true">03</span>{{Section 3 heading}}</h2>
+      <p>{{...}}</p>
+    </section>
+
+    <section class="guide-faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details>
+        <summary>{{FAQ QUESTION 1}}</summary>
+        <p>{{FAQ ANSWER 1. Keep this identical to the FAQPage schema above.}}</p>
+      </details>
+      <details>
+        <summary>{{FAQ QUESTION 2}}</summary>
+        <p>{{FAQ ANSWER 2}}</p>
+      </details>
+    </section>
+
+    <aside class="guide-related">
+      <h2>In this series</h2>
+      <ul>
+        <!-- The cluster posts that ladder into this pillar. -->
+        <li><a href="/blog/{{cluster-slug}}/">{{Cluster post title}}</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <div class="post-cta">
+    <p>{{One-line nudge tying the topic back to booking you.}}</p>
+    <a href="/#quote" class="btn btn-fill">Get a Quote</a>
+  </div>
+</article>
+
+</main>
+
+<footer>
+  <p class="footer-wordmark">Dillon <span>R.</span> Carpenter</p>
+  <p class="footer-meta">Videographer &amp; filmmaker in Muncie, Indiana</p>
+  <ul class="footer-links">
+    <li><a href="https://vimeo.com/dillonrcarpenter" rel="me noopener" target="_blank">Vimeo</a></li>
+    <li><a href="https://www.imdb.com/name/nm5238580/" rel="me noopener" target="_blank">IMDb</a></li>
+    <li><a href="/guides/">Guides</a></li>
+    <li><a href="/blog/">Field Notes</a></li>
+    <li><a href="/#quote">Get a Quote</a></li>
+  </ul>
+  <p class="footer-copy">&copy; <span id="year">2026</span> Dillon R. Carpenter. All rights reserved.</p>
+  <p class="footer-tc" aria-hidden="true">End of reel &middot; 00:00:00:00</p>
+</footer>
+
+<script src="/site.js?v=5" defer></script>
+</body>
+</html>
